@@ -1,1 +1,0 @@
-// Updates the chat object
