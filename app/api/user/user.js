@@ -17,8 +17,9 @@ export default function handler(req, res) {
 
 async function createUser({ req, res }) {
 	let body = req.body;
+	let userId = req.body.id;
 	try {
-		const newUser = new User(body);
+		const newUser = new User({ ...body, _id: userId });
 		await newUser.save();
 		res.sendStatus(200);
 	} catch (err) {
@@ -28,8 +29,14 @@ async function createUser({ req, res }) {
 
 async function getUser({ req, res }) {
 	try {
-		const email = req.query.email;
-		const user = await User.findOne({ email });
+		const id = req.query.id;
+		const user = await User.findById(id, function (err, docs) {
+			if (err) {
+				console.log(err);
+			} else {
+				return docs;
+			}
+		});
 		res.status(200).send(user);
 	} catch (err) {
 		res.status(500).send({ error: 'Failed to get users' });
@@ -38,8 +45,8 @@ async function getUser({ req, res }) {
 
 async function deleteUser({ req, res }) {
 	try {
-		const email = req.query.email;
-		await User.findOneAndDelete({ email: email });
+		const id = req.query.id;
+		await User.findByIdAndDelete(id);
 		res.sendStatus(200);
 	} catch (err) {
 		res.status(500).send({ error: 'Failed to delete user' });
@@ -49,12 +56,10 @@ async function deleteUser({ req, res }) {
 // TODO This needs to be fixed lol
 async function updateUser({ req, res }) {
 	try {
-		const email = req.query.email;
+		const id = req.query.id;
+		const newData = req.body;
 
-		await User.findOneAndUpdate(
-			{ email: email }, // Find the user by their email
-			{ $set: newData } // Update the user data
-		);
+		await User.findByIdAndUpdate(id, newData);
 		res.sendStatus(200);
 	} catch (err) {
 		res.status(500).send({ error: 'Failed to update user' });
