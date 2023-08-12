@@ -46,9 +46,11 @@ async function deleteUser({ req, res }) {
 	}
 }
 
+// TODO This needs to be fixed lol
 async function updateUser({ req, res }) {
 	try {
 		const email = req.query.email;
+
 		await User.findOneAndUpdate(
 			{ email: email }, // Find the user by their email
 			{ $set: newData } // Update the user data
