@@ -1,7 +1,7 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Syne } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const syne = Syne({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -11,7 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={syne.className + " flex w-screen h-screen justify-center item-center"}>
+        <div className='w-full h-screen max-w-lg bg-gray-200'>
+          {children}
+        </div>
+      </body>
     </html>
   )
 }
