@@ -71,6 +71,7 @@ export async function PUT(req) {
             { $push: { messages: updateData.messages } }
         );
 
+        console.log("SUCCESS")
         return NextResponse.json({ status: 200 });
     } catch (err) {
         return NextResponse.json({ error: err.stack }, { status: 500 });

@@ -28,7 +28,6 @@ export async function GET(req) {
               { people: { $in: [receiverEmail] } }
             ]
         });
-        console.log(messages)
         return NextResponse.json({ messages: messages }, { status: 200 });
     } catch (err) {
         return NextResponse.json(

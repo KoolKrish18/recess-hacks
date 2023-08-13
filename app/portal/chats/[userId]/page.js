@@ -33,15 +33,34 @@ const ChatPage = ({ userId }) => {
         }
     };
 
+    const pushMessage = async (message) => {
+        // Returns a list of all the user's chats
+        const messagesResponse = await fetch('/api/chat', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                people: [userEmail, receiverEmail],
+                messages: {sender: userEmail, message},
+            }),
+        }).then((res) => console.log(res.json()));
+    };
+
     useEffect(() => {
-        getUserMessages(receiverEmail, userEmail);
-    }, [receiverEmail]);
+        setInterval(() => {
+            console.log('Getting messages');
+            getUserMessages(receiverEmail, userEmail);
+        }, 10000);
+    }, [receiverEmail, userEmail]);
 
     const receiverName = 'John Doe';
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (textMessage === '') return;
+        pushMessage(textMessage)
+        setMessages([...messages, { sender: userEmail, message: textMessage }]);
         //Send the message to the server
         setTextMessage('');
     };
