@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
 import mongoose, { Schema, model } from 'mongoose';
-dotenv.config({ path: '../../api/.env.local' });
 
 const messageSchema = Schema({
     sender: String,
@@ -8,7 +6,7 @@ const messageSchema = Schema({
     timestamp: { type: Date, default: Date.now },
 });
 const chatSchema = Schema({
-    _id: {
+    people: {
         type: [String],
         required: true,
         unique: true,
@@ -16,17 +14,6 @@ const chatSchema = Schema({
     messages: [messageSchema],
 });
 
-const Chat = model('Chat', chatSchema);
+const ChatModel = mongoose.models.ChatModel || model('ChatModel', chatSchema);
 
-mongoose.connect(process.env.DATABASE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const dbConnection = mongoose.connection;
-
-dbConnection.on('connected', async () => {
-    await Chat.init();
-});
-
-export default Chat;
+export default ChatModel;

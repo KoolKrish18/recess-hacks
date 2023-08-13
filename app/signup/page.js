@@ -62,9 +62,13 @@ const SignupPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData),
-        }).then((res) => {
+        }).then(async (res) => {
             if (res.status === 200) {
-                localStorage.setItem('userData', userData);
+                let data = await res.json();
+                localStorage.setItem('firstName', data.firstName);
+                localStorage.setItem('lastName', data.lastName);
+                localStorage.setItem('email', data.email);
+                localStorage.setItem('password', data.password);
             } else {
                 //TODO Show some toast with an error or smth
             }

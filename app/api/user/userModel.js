@@ -50,6 +50,5 @@ const userSchema = Schema({
     chat: [{ type: Schema.ObjectId, ref: 'Chat', required: false }],
 });
 
-const UserModel =
-    mongoose.models.UserModel || mongoose.model('UserModel', userSchema);
+const UserModel = mongoose.models.UserModel || model('UserModel', userSchema);
 export { UserModel };
