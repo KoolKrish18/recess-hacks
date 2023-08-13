@@ -8,6 +8,7 @@ function MessagesDisplay({messages, userId, receiverId}) {
 
     useEffect(() => {
         lastMessageRef.current?.scrollIntoView();
+        console.log("MessagesDisplay: ", messages)
     }, [messages]);
     return (
         <div className="overflow-y-scroll h-[calc(100vh-292px)]">
@@ -17,12 +18,12 @@ function MessagesDisplay({messages, userId, receiverId}) {
             </div>
         
             <div className='mt-8'>
-                {messages.map((message, index) => (
-                    <div key={index} dir={message.user === userId ? 'rtl' : 'ltr'} className={"block"}>
+                {messages?.map((message, index) => (
+                    <div key={index} dir={message.sender === userId ? 'rtl' : 'ltr'} className={"block"}>
                         <div className={"p-2 px-4 m-2 rounded-3xl inline-block max-w-[min(75vw,24rem)] " + 
-                        (message.user === userId ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-900')}>
+                        (message.sender === userId ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-900')}>
                             <h1 dir="ltr">
-                                {message.text}
+                                {message.message}
                             </h1>        
                         </div>
                     </div>
