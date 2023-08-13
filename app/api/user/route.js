@@ -75,6 +75,7 @@ export async function PUT(req) {
         );
     }
 }
+
 // LEAVE GET Request code here for now
 /*    connectDB().then(async () => {
         try {

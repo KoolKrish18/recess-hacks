@@ -21,7 +21,7 @@ const LoginPage = () => {
         },
     ];
     function submitData() {
-        fetch('/api/login', {
+        fetch('/api/user/login', {
             method: 'POST',
             body: JSON.stringify({
                 email: userData.email,
@@ -31,8 +31,8 @@ const LoginPage = () => {
             if (response.status === 200) {
                 let body = response.json();
                 localStorage.setItem('email', body.email);
-                localStorage.setItem('password', data.password);
-                window.location.href = '/';
+                localStorage.setItem('password', body.password);
+                window.location.href = '/portal';
             } else {
                 alert('Invalid Credentials');
             }
