@@ -15,6 +15,7 @@ const ChatPage = ({ userId }) => {
 
     useEffect(() => {
         textRef.current.focus();
+        getUserMessages(receiverEmail, userEmail);
     }, []);
 
     const params = useParams();
