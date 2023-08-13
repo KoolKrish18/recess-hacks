@@ -41,7 +41,8 @@ const ChatPage = ({ userId }) => {
 
     const pushMessage = async (message) => {
         // Returns a list of all the user's chats
-        const messagesResponse = await fetch('/api/chat', {
+        console.log('ykwhatimnsoding');
+        await fetch('/api/chat', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,14 +51,14 @@ const ChatPage = ({ userId }) => {
                 people: [userEmail, receiverEmail],
                 messages: { sender: userEmail, message },
             }),
-        }).then((res) => console.log(res.json()));
+        }).then(async (res) => console.log(await res.json()));
     };
 
     useEffect(() => {
         setInterval(() => {
             console.log('Getting messages');
             getUserMessages(receiverEmail, userEmail);
-        }, 10000000);
+        }, 10000);
     }, [receiverEmail, userEmail]);
 
     const receiverName = 'John Doe';

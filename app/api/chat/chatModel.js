@@ -1,9 +1,9 @@
 import mongoose, { Schema, model } from 'mongoose';
 
 const messageSchema = Schema({
-    sender: String,
-    message: String,
-    timestamp: { type: Date, default: Date.now },
+    sender: { type: String, required: true },
+    message: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now, required: false },
 });
 const chatSchema = Schema({
     people: {

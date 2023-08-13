@@ -64,14 +64,14 @@ export async function POST(req) {
 export async function PUT(req) {
     const updateData = await req.json();
     try {
-        console.log(updateData);
         const people = updateData.people;
-        await ChatModel.findOneAndUpdate(
-            { people: people },
-            { $push: { messages: updateData.messages } }
-        );
+        const messages = updateData.messages;
 
-        console.log("SUCCESS")
+        await ChatModel.findOneAndUpdate(
+            { people: { $all: people } },
+            { $push: { messages: messages } }
+        );
+        console.log('SUCCESS');
         return NextResponse.json({ status: 200 });
     } catch (err) {
         return NextResponse.json({ error: err.stack }, { status: 500 });
