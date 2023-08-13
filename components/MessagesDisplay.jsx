@@ -1,9 +1,8 @@
-"use client"
+'use client';
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 
-function MessagesDisplay({messages, userId, receiverId}) {
-
+function MessagesDisplay({ messages, userId, receiverId }) {
     const lastMessageRef = useRef(null);
 
     useEffect(() => {
@@ -15,22 +14,30 @@ function MessagesDisplay({messages, userId, receiverId}) {
                 Start Your Conversation Off Strong <br />
                 This is the Start of Something Beautiful
             </div>
-        
-            <div className='mt-8'>
+
+            <div className="mt-8">
                 {messages.map((message, index) => (
-                    <div key={index} dir={message.user === userId ? 'rtl' : 'ltr'} className={"block"}>
-                        <div className={"p-2 px-4 m-2 rounded-3xl inline-block max-w-[min(75vw,24rem)] " + 
-                        (message.user === userId ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-900')}>
-                            <h1 dir="ltr">
-                                {message.text}
-                            </h1>        
+                    <div
+                        key={index}
+                        dir={message.user === userId ? 'rtl' : 'ltr'}
+                        className={'block'}
+                    >
+                        <div
+                            className={
+                                'p-2 px-4 m-2 rounded-3xl inline-block max-w-[min(75vw,24rem)] ' +
+                                (message.user === userId
+                                    ? 'bg-gray-500 text-white'
+                                    : 'bg-gray-200 text-gray-900')
+                            }
+                        >
+                            <h1 dir="ltr">{message.text}</h1>
                         </div>
                     </div>
                 ))}
             </div>
             <div ref={lastMessageRef} className="h-4"></div>
         </div>
-    )
+    );
 }
 
-export default MessagesDisplay
+export default MessagesDisplay;
