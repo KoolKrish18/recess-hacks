@@ -16,8 +16,6 @@
     "eslint-config-next": "13.4.13",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.5.0",
-    "mongodb": "^5.7.0",
-    "mongodb-client-encryption": "^2.9.0",
     "mongoose": "^7.4.3",
     "next": "13.4.13",
     "postcss": "8.4.27",
