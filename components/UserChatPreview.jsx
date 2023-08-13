@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const UserChatPreview = ({user}) => {
   return (
-    <Link href={"hi"} className='flex items-center justify-between py-6 mx-8 border-t-2 border-gray-200'>
+    <Link href={"/portal/chats/" + user.id} className='flex items-center justify-between py-6 mx-8 border-t-2 border-gray-200'>
         <div className="flex gap-4 ">
             <div>
                 <Image

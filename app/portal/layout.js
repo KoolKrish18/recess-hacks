@@ -2,9 +2,9 @@ import Navbar from "@components/Navbar"
 
 const PortalLayout = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
         <div className="flex-1">
-            {children}
+          {children}
         </div>
         <Navbar/>
     </div>

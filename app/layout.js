@@ -14,7 +14,9 @@ export default function RootLayout({ children }) {
       <body className={syne.className + " flex w-screen h-screen justify-center item-center bg-gray-500"}>
         <div className='flex flex-col w-full h-screen max-w-lg overflow-hidden bg-white'>
           <h1 className='flex items-center justify-center py-6 text-3xl font-bold bg-white shadow-sm'>FRIENDLY</h1>
-          {children}
+          <div className='flex-1'>
+            {children}
+          </div>
         </div>
       </body>
     </html>
