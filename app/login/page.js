@@ -32,6 +32,7 @@ const LoginPage = () => {
         }).then((response) => {
             if (response.status === 200) {
                 let body = response.json();
+                console.log(body);
                 localStorage.setItem('email', body.email);
                 localStorage.setItem('password', body.password);
                 window.location.href = '/portal';

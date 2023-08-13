@@ -23,9 +23,15 @@ const ChatPage = ({ userId }) => {
 
     const getUserMessages = async (receiverEmail, userEmail) => {
         // Returns a list of all the user's chats
-        const messagesResponse = await fetch('/api/chat/specific/?userEmail=' + userEmail + '&receiverEmail=' + receiverEmail, {
-            method: 'GET',
-        }).then((res) => res.json());
+        const messagesResponse = await fetch(
+            '/api/chat/specific/?userEmail=' +
+                userEmail +
+                '&receiverEmail=' +
+                receiverEmail,
+            {
+                method: 'GET',
+            }
+        ).then((res) => res.json());
         if (messagesResponse.messages) {
             setMessages(messagesResponse?.messages[0]?.messages);
         } else {
@@ -42,7 +48,7 @@ const ChatPage = ({ userId }) => {
             },
             body: JSON.stringify({
                 people: [userEmail, receiverEmail],
-                messages: {sender: userEmail, message},
+                messages: { sender: userEmail, message },
             }),
         }).then((res) => console.log(res.json()));
     };
@@ -59,7 +65,7 @@ const ChatPage = ({ userId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (textMessage === '') return;
-        pushMessage(textMessage)
+        pushMessage(textMessage);
         setMessages([...messages, { sender: userEmail, message: textMessage }]);
         //Send the message to the server
         setTextMessage('');
