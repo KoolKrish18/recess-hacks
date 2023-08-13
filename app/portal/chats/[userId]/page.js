@@ -10,7 +10,7 @@ import pfp from '@public/pfp.png';
 
 const ChatPage = ({ userId }) => {
     const [textMessage, setTextMessage] = useState('');
-    const textRef = useRef(null);
+        const textRef = useRef(null);
 
     useEffect(() => {
         textRef.current.focus();
@@ -20,14 +20,6 @@ const ChatPage = ({ userId }) => {
     const receiverId = params.userId;
     const userIdPlaceholder = 'userId1';
 
-    //TODO Request the user's messages from the server based on the user's ID
-    function getUserMessages() {
-        let userEmail = localStorage.getItem('email');
-        // Returns a list of all the user's chats
-        fetch('./api/chat/?email=' + userEmail, {
-            method: 'GET',
-        });
-    }
     //get the user's info and the info from the receiver
 
     const messages = [

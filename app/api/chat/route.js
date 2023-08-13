@@ -21,6 +21,7 @@ import { NextResponse } from 'next/server';
 //! THIS IS IMPORTANT, learned this the hard way LOL
 connectDB();
 
+// Get all chats for a user
 export async function GET(req) {
     let searchURL = new URL(req.url);
     let searchParams = searchURL.searchParams;
