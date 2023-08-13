@@ -1,10 +1,9 @@
 import { connectDB, db } from '@app/lib/db';
 import { UserModel } from './userModel';
 import { NextResponse } from 'next/server';
+import bodyParser from 'body-parser';
 
 export async function GET(req) {
-    await dbConnect();
-
     try {
         const id = req.query.id;
         const user = await UserModel.findById(id, function (err, docs) {
@@ -25,20 +24,12 @@ export async function GET(req) {
 
 export async function POST(req) {
     const body = req.body;
-
+    console.log(body);
     connectDB();
-
     try {
         await db.once('open', async () => {
-            const newUser = new UserModel({
-                email: 'msso',
-                firstName: 'sss',
-                lastName: 'sss',
-                password: 'sss',
-                type: 'sss',
-                age: 15,
-                bio: '2222',
-            });
+            const newUser = new UserModel(...body);
+
             await newUser.save();
             console.log('User added:', newUser);
 
@@ -46,14 +37,10 @@ export async function POST(req) {
         });
     } catch (err) {
         console.log(err.stack);
-    } finally {
-        await client.close();
     }
 }
 
 export async function DELETE(req) {
-    await dbConnect();
-
     try {
         const email = req.query.email;
         await UserModel.findOneAndDelete({ email: email });
@@ -69,8 +56,6 @@ export async function DELETE(req) {
 
 // TODO This needs to be fixed lol
 export async function PUT(req) {
-    await dbConnect();
-
     try {
         const email = req.query.email;
         const newData = req.body;

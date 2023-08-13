@@ -1,9 +1,30 @@
-import React from 'react'
+'use client';
+
+import React, { useEffect } from 'react';
 import Image from 'next/image'
 import HandsHolding from 'public/handsholding.png'
 import GradientButton from '@components/GradientButton'
 
 const SignupPage = () => {
+
+  useEffect(() => {
+    fetch('./api/user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: 'msso',
+            firstName: 'sss',
+            lastName: 'sss',
+            password: 'sss',
+            type: 'sss',
+            age: 15,
+            bio: '2222',
+        }),
+    });
+  }, []);
+  
   return (
     <div className="flex flex-col content-center min-h-screen">
       <div className="flex justify-center">
@@ -27,4 +48,4 @@ const SignupPage = () => {
   )
 }
 
-export default SignupPage
+export default SignupPage;
