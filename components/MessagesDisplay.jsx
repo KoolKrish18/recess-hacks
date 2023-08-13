@@ -19,8 +19,8 @@ function MessagesDisplay({messages, userId, receiverId}) {
             <div className='mt-8'>
                 {messages.map((message, index) => (
                     <div key={index} dir={message.user === userId ? 'rtl' : 'ltr'} className={"block"}>
-                        <div className={"p-2 px-4 m-2 rounded-3xl inline-block " + 
-                        (message.user === userId ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900')}>
+                        <div className={"p-2 px-4 m-2 rounded-3xl inline-block max-w-[min(75vw,24rem)] " + 
+                        (message.user === userId ? 'bg-gray-500 text-white' : 'bg-gray-200 text-gray-900')}>
                             <h1 dir="ltr">
                                 {message.text}
                             </h1>        
