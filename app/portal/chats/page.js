@@ -58,7 +58,7 @@ const ChatsPage = () => {
         if (userMessages?.length > 0){
             userMessages?.map((user) => {
                 //if we add groups chats remove this 0
-                getUserInfo(user?.people[0]);
+                getUserInfo(user?.people[0] !== localStorage.getItem('email') ? user?.people[0] : user?.people[1]);
             })
         }
     }, [userMessages]);
