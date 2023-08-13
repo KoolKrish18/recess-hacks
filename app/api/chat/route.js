@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req) {
     try {
-        console.log('ss');
         const userEmail = req.query.email;
         const chatData = await Chat.findOne({ people: userEmail });
 

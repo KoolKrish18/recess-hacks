@@ -25,11 +25,11 @@ export async function GET(req) {
 export async function POST(req) {
     const body = await req.json();
     connectDB();
-    console.log(body)
+    console.log(body);
     try {
         await db.once('open', async () => {
-            const newUser = new UserModel(body);
-            console.log(newUser)
+            const newUser = new UserModel(...jp);
+            console.log(newUser);
 
             await newUser.save();
             console.log('User added:', newUser);
@@ -42,11 +42,14 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
+    connectDB;
     try {
-        const email = req.query.email;
-        await UserModel.findOneAndDelete({ email: email });
+        await db.once('open', async () => {
+            const email = req.query.email;
+            await UserModel.findOneAndDelete({ email: email });
 
-        return NextResponse.json({ status: 200 });
+            return NextResponse.json({ status: 200 });
+        });
     } catch (err) {
         return NextResponse.json(
             { error: 'Internal Server Error' },
