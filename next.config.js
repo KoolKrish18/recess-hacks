@@ -20,6 +20,9 @@ const nextConfig = {
             },
         ];
     },
+    api: {
+        bodyParser: true,
+    },
 };
 
 module.exports = nextConfig;

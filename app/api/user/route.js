@@ -1,5 +1,5 @@
 import { UserModel } from './userModel';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@app/lib/dbConnect';
 
 export async function GET(req) {
@@ -24,13 +24,12 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
+    const body = new NextRequest(req).body;
     await dbConnect();
 
-    let body = req.body;
-    console.log(req);
+    console.log(body);
     try {
-        console.log(process.env.MONGODB_URI);
-        const newUser = new UserModel(...body);
+        const newUser = await UserModel.create(...body);
         await newUser.save();
         return NextResponse.json({ status: 200 });
     } catch (err) {
