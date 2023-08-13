@@ -1,5 +1,6 @@
 import { UserModel } from './userModel';
-import { NextRequest, NextResponse } from 'next/server';
+const { MongoClient } = require('mongodb');
+import { NextResponse } from 'next/server';
 import dbConnect from '@app/lib/dbConnect';
 
 export async function GET(req) {
@@ -24,16 +25,35 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-    const body = new NextRequest(req).body;
-    await dbConnect();
+    const body = req.body;
 
     console.log(body);
+
+    const client = new MongoClient(process.env.MONGODB_URI);
+
     try {
-        const newUser = await UserModel.create(...body);
-        await newUser.save();
+        await client.connect();
+        const db = client.db('test');
+        const users = db.collection('users');
+        console.log('Successfully connected to Atlas');
+
+        const newUser = UserModel.create({
+            email: 'msso',
+            firstName: 'sss',
+            lastName: 'sss',
+            password: 'sss',
+            type: 'sss',
+            age: 15,
+            bio: '2222',
+        });
+
+        await users.insertOne(newUser);
+        //await newUser.save();
         return NextResponse.json({ status: 200 });
     } catch (err) {
-        return NextResponse.json({ error: err }, { status: 500 });
+        console.log(err.stack);
+    } finally {
+        await client.close();
     }
 }
 
