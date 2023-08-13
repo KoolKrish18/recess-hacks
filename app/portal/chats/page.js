@@ -163,7 +163,6 @@ const ChatsPage = () => {
                     </div>
                 </div>
             </div>
-
             <div className="flex flex-col h-screen pb-32 overflow-y-scroll">
                 {userInfos.map((user, index) => (
                     <UserChatPreview
@@ -172,9 +171,7 @@ const ChatsPage = () => {
                         pfp={pfp}
                         lastMessage={
                             userMessages[index]?.messages.length > 0
-                                ? userMessages[index].messages[
-                                      userMessages[index].messages.length - 1
-                                  ]?.text
+                                ? userMessages[index].messages[0]?.message
                                 : 'Start a Conversation'
                         }
                     />
