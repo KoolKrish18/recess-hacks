@@ -23,12 +23,12 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-    const body = req.body;
-    console.log(body);
+    const jp = await req.json();
     connectDB();
     try {
         await db.once('open', async () => {
-            const newUser = new UserModel(...body);
+            const newUser = new UserModel(...jp);
+            console.log(newUser)
 
             await newUser.save();
             console.log('User added:', newUser);
