@@ -2,15 +2,16 @@
 
 import Navbar from '@components/Navbar';
 import { useEffect } from 'react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const PortalLayout = ({ children }) => {
+    const router = useRouter();
     useEffect(() => {
         if (
             !localStorage.getItem('email') &&
             !localStorage.getItem('password')
         ) {
-            redirect('/login');
+            router.push('/login');
         }
     });
 
