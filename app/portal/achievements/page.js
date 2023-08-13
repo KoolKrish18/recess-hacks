@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import achievementsData from './achievementsData';
-import { GET } from '@app/api/chat/route';
-import { data } from 'autoprefixer';
 
 const AchievementsPage = () => {
     const totalPoints = 3;
@@ -13,7 +11,9 @@ const AchievementsPage = () => {
     //first fetch achievements, sync them with the mapped, key inside achievement card (is or not) - data fetched
 
     useEffect(() => {
-        fetch('/api/user', { method: 'GET' }).then(async (res) => {
+        fetch('/api/user?email=' + localStorage.getItem('email'), {
+            method: 'GET',
+        }).then(async (res) => {
             if (res.status == 200) {
                 let body = await res.json();
                 setUserBadges(body.achievements);
@@ -43,7 +43,15 @@ const AchievementsPage = () => {
             </div>
             <div className="flex flex-col space-y-4 h-[calc(100vh-148px)] overflow-scroll p-6">
                 {achievementsData.map((achievement, index) => (
-                    <AchievementCard key={index} {...achievement} />
+                    <AchievementCard
+                        key={index}
+                        {...achievement}
+                        key1={
+                            userBadges
+                                ? userBadges[achievement.label] === true && true
+                                : false
+                        }
+                    />
                 ))}
             </div>
         </div>

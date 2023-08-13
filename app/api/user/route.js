@@ -20,6 +20,7 @@ connectDB();
 
 export async function GET(req) {
     let searchURL = new URL(req.url);
+    console.log();
     let searchParams = searchURL.searchParams;
     const email = searchParams.get('email');
 
