@@ -1,17 +1,38 @@
 "use client"
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 import UserChatPreview from '@components/UserChatPreview'
 import pfp from '@public/pfp.png'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { set } from 'mongoose'
 
 const ChatsPage = () => {
 
-    const elementRef = useRef(null);
+    const [userMessages, setUserMessages] = useState([]);
+    const [userInfos, setUserInfos] = useState([]);
     const [arrowDisable, setArrowDisable] = useState(true);
+    const elementRef = useRef(null);
+
+    //TODO Request the user's messages from the server based on the user's ID
+    const getUserMessages = async () => {
+        let userEmail = localStorage.getItem('email');
+        // Returns a list of all the user's chats
+        const messagesResponse = await fetch('/api/chat/?email=' + userEmail, {
+            method: 'GET',
+        }).then((res) => res.json());
+        setUserMessages(messagesResponse.chatData);
+    };
+
+    const getUserInfo = async (userEmail) => {
+        // Returns a list of all the user's chats
+        const messagesResponse = await fetch('/api/user/?email=' + userEmail, {
+            method: 'GET',
+        }).then((res) => res.json());
+        setUserMessages(messagesResponse.user);
+    };
 
     const handleHorizantalScroll = (element, speed, distance, step) => {
         let scrollAmount = 0;
@@ -28,6 +49,24 @@ const ChatsPage = () => {
         }
         }, speed);
     };
+
+    useEffect(() => {
+        getUserMessages();
+    }, []);
+
+    useEffect(() => {
+        if (userMessages?.length > 0){
+            userMessages?.map((user) => {
+                //if we add groups chats remove this 0
+                getUserInfo(user?.people[0]);
+                setUserInfos((userInfos) => [...userInfos, user]);
+            })
+        }
+    }, [userMessages]);
+
+    useEffect(() => {
+        console.log(userMessages);
+    }, [userMessages]);
 
     const users = Array(20).fill(
             {
