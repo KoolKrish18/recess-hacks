@@ -6,8 +6,6 @@ import UserChatPreview from '@components/UserChatPreview';
 import pfp from '@public/pfp.png';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { set } from 'mongoose';
 
 const ChatsPage = () => {
     const [userMessages, setUserMessages] = useState([]);
