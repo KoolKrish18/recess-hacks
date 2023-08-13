@@ -1,6 +1,6 @@
+import { connectDB, db } from '@app/lib/db';
 import { UserModel } from './userModel';
-import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@app/lib/dbConnect';
+import { NextResponse } from 'next/server';
 
 export async function GET(req) {
     await dbConnect();
@@ -24,16 +24,30 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-    const body = new NextRequest(req).body;
-    await dbConnect();
+    const body = req.body;
 
-    console.log(body);
+    connectDB();
+
     try {
-        const newUser = await UserModel.create(...body);
-        await newUser.save();
-        return NextResponse.json({ status: 200 });
+        await db.once('open', async () => {
+            const newUser = new UserModel({
+                email: 'msso',
+                firstName: 'sss',
+                lastName: 'sss',
+                password: 'sss',
+                type: 'sss',
+                age: 15,
+                bio: '2222',
+            });
+            await newUser.save();
+            console.log('User added:', newUser);
+
+            return NextResponse.json({ status: 200 });
+        });
     } catch (err) {
-        return NextResponse.json({ error: err }, { status: 500 });
+        console.log(err.stack);
+    } finally {
+        await client.close();
     }
 }
 
