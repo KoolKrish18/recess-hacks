@@ -36,7 +36,7 @@ const ChatsPage = () => {
                 avatar: pfp,
                 lastMessage: 'This was the last message i send to you',
                 favourite: true,
-                id: 'yomama'
+                id: 'userId2'
             }
         )
 
@@ -48,14 +48,14 @@ const ChatsPage = () => {
                     <div className='relative'>
                         <button className={'absolute left-0 text-gray-400 top-14 ' + (arrowDisable && "hidden")} onClick={() => {
                         handleHorizantalScroll(elementRef.current, 25, 100, -10);}}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 9l-3 3m0 0l3 3m-3-3h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         </button>
                         <button className='absolute right-0 text-gray-400 top-14' onClick={() => {
                             handleHorizantalScroll(elementRef.current, 25, 100, 10);}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </button>
                     </div>
@@ -63,7 +63,7 @@ const ChatsPage = () => {
                     <div className='flex w-auto gap-4 px-8 py-4 overflow-x-scroll' ref={elementRef}>
                         {users.map((user, index) => (
                             user.favourite && 
-                            <Image className='h-full rounded-full w-28' src={user.avatar} alt={user.firstName + " " + user.lastName + "'s profile picture"} key={index}/>
+                                <Image className='h-full rounded-full w-28' src={user.avatar} alt={user.firstName + " " + user.lastName + "'s profile picture"} key={index}/>
                         ))}
                     </div>
                 </div>
