@@ -28,10 +28,10 @@ const ChatsPage = () => {
 
     const getUserInfo = async (userEmail) => {
         // Returns a list of all the user's chats
-        const messagesResponse = await fetch('/api/user/?email=' + userEmail, {
+        const userInfoResponse = await fetch('/api/user/?email=' + userEmail, {
             method: 'GET',
         }).then((res) => res.json());
-        setUserMessages(messagesResponse.user);
+        setUserInfos((userInfos) => [...userInfos, userInfoResponse]);
     };
 
     const handleHorizantalScroll = (element, speed, distance, step) => {
@@ -59,15 +59,10 @@ const ChatsPage = () => {
             userMessages?.map((user) => {
                 //if we add groups chats remove this 0
                 getUserInfo(user?.people[0]);
-                setUserInfos((userInfos) => [...userInfos, user]);
             })
         }
     }, [userMessages]);
-
-    useEffect(() => {
-        console.log(userMessages);
-    }, [userMessages]);
-
+    
     const users = Array(20).fill(
             {
                 firstName: 'Montgomery',
@@ -80,7 +75,7 @@ const ChatsPage = () => {
         )
 
     return (
-        <div className='h-full'>
+        <div className={'h-full '}>
             <div className='flex flex-col'>
                 <h1 className='p-4 text-3xl'>Favourite People</h1>
                 <div className='relative w-full'>
@@ -108,9 +103,11 @@ const ChatsPage = () => {
                 </div>
             </div>
             
-            <div className='flex flex-col h-screen overflow-y-scroll'>
-                {users.map((user, index) => (
-                    <UserChatPreview key={index} user={user}/>
+            <div className='flex flex-col h-screen overflow-y-scroll pb-32'>
+                {userInfos.map((user, index) => (
+                    <UserChatPreview key={index} user={user.user} pfp={pfp} 
+                    lastMessage={userMessages[index]?.messages.length > 0 ? 
+                        userMessages[index].messages[userMessages[index].messages.length - 1]?.text : "Start a Conversation"}/>
                 ))}
             </div>
         </div>
