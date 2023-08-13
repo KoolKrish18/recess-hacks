@@ -1,55 +1,54 @@
 import { connectDB, db } from '@app/lib/db';
 import { UserModel } from './userModel';
 import { NextResponse } from 'next/server';
-import bodyParser from 'body-parser';
+connectDB();
+export async function GET(req, context) {
+    let searchURL = new URL(req.url);
+    let searchParams = searchURL.searchParams;
+    const email = searchParams.get('email');
 
-export async function GET(req) {
-    try {
-        const id = req.query.id;
-        const user = await UserModel.findById(id, function (err, docs) {
-            if (err) {
-                console.log(err);
-            } else {
-                return docs;
-            }
-        });
-        return NextResponse.json(user);
-    } catch (err) {
-        return NextResponse.json(
+    console.log(email);
+    /*    connectDB().then(async () => {
+        try {
+            await db.once('open', async () => {
+                console.log('sss');
+                let user = await UserModel.findOne({ email: email });
+                console.log(user);
+                return NextResponse.json({ user: user }, { status: 200 });
+            });
+        } catch (err) {
+               return NextResponse.json(
             { error: 'Internal Server Error' },
             { status: 500 }
-        );
-    }
+        ); 
+        }
+    }); */
+    let user = await UserModel.findOne({ email: email });
+    return NextResponse.json({ user: user }, { status: 200 });
 }
 
 export async function POST(req) {
     const body = await req.json();
-    connectDB();
-    console.log(body);
+
     try {
-        await db.once('open', async () => {
-            const newUser = new UserModel(...jp);
-            console.log(newUser);
+        const newUser = new UserModel(body);
+        console.log(newUser);
 
-            await newUser.save();
-            console.log('User added:', newUser);
+        await newUser.save();
+        console.log('User added:', newUser);
 
-            return NextResponse.json({ status: 200 });
-        });
+        return NextResponse.json({ status: 200 });
     } catch (err) {
         console.log(err.stack);
     }
 }
 
 export async function DELETE(req) {
-    connectDB;
     try {
-        await db.once('open', async () => {
-            const email = req.query.email;
-            await UserModel.findOneAndDelete({ email: email });
+        const email = req.query.email;
+        await UserModel.findOneAndDelete({ email: email });
 
-            return NextResponse.json({ status: 200 });
-        });
+        return NextResponse.json({ status: 200 });
     } catch (err) {
         return NextResponse.json(
             { error: 'Internal Server Error' },
