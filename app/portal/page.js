@@ -17,8 +17,7 @@ const accountsData = [
 const PortalHome = () => {
   return (
     <div className="container p-6 mx-auto">
-      <h1 className="mb-6 text-3xl font-semibold">Portal Home</h1>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="flex flex-col space-y-4">
         {accountsData.map((account, index) => (
           <AccountBox key={index} {...account} />
         ))}
@@ -29,15 +28,17 @@ const PortalHome = () => {
 
 const AccountBox = ({ name, profilePic, interests }) => {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="flex flex-row p-6 bg-white rounded-lg shadow-md">
       <div className="mb-4">
-        <img src={profilePic} alt={`${name}'s Profile`} className="w-16 h-16 mx-auto rounded-full" />
+        <img src={profilePic} alt={`${name}'s Profile`} className="w-16 h-16 mr-auto rounded-full" />
       </div>
-      <h3 className="mb-2 text-xl font-semibold">{name}</h3>
-      <div className="flex space-x-2">
-        {interests.map((interest, index) => (
-          <span key={index} className="px-2 py-1 text-sm bg-gray-200 rounded">{interest}</span>
-        ))}
+      <div>
+        <h3 className="mb-2 text-xl font-semibold">{name}</h3>
+        <div className="flex space-x-2">
+          {interests.map((interest, index) => (
+            <span key={index} className="px-2 py-1 text-sm bg-gray-200 rounded">{interest}</span>
+          ))}
+        </div>
       </div>
     </div>
   );
