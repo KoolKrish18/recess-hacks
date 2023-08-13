@@ -1,110 +1,78 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import achievementsData from './achievementsData';
 
 const AchievementsPage = () => {
     const totalPoints = 3;
+    const [userBadges, setUserBadges] = useState();
     let currentPoints = 1;
     const progressPercentage = (currentPoints / totalPoints) * 100;
+    //first fetch achievements, sync them with the mapped, key inside achievement card (is or not) - data fetched
 
-    const achievementsData = [
-        {
-            title: 'First Achievement',
-            description: 'You accomplished your first task!',
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 12.75l6 6 9-13.5"
-                    />
-                </svg>
-            ),
-            points: 50,
-        },
-        {
-            title: 'Milestone Achievement',
-            description: 'You reached a significant milestone.',
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 12.75l6 6 9-13.5"
-                    />
-                </svg>
-            ),
-            points: 100,
-        },
-        {
-            title: 'Expert Achiever',
-            description: 'You are recognized as an expert in your field.',
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 12.75l6 6 9-13.5"
-                    />
-                </svg>
-            ),
-            points: 150,
-        },
-    ];
+    useEffect(() => {
+        fetch('/api/user?email=' + localStorage.getItem('email'), {
+            method: 'GET',
+        }).then(async (res) => {
+            if (res.status == 200) {
+                let body = await res.json();
+                setUserBadges(body.achievements);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log(userBadges);
+    }, [userBadges]);
 
     return (
-        <div className="container p-5 mx-auto">
-            <h1 className="mb-4 text-2xl font-semibold">Achievements</h1>
-            <div className="mb-4">
-                <p>
-                    Achievements Completed: {currentPoints}/{totalPoints}
-                </p>
-                <div className="w-full h-4 bg-gray-400 rounded">
-                    <div
-                        className="h-4 bg-blue-500 rounded"
-                        style={{ width: `${progressPercentage}%` }}
-                    ></div>
+        <div className="container mx-auto">
+            <div className="p-5 mb-4 bg-white rounded-t shadow-md">
+                <h1 className="mb-4 text-2xl font-semibold">Achievements</h1>
+                <div className="mb-4">
+                    <p>
+                        Achievements Completed: {currentPoints}/{totalPoints}
+                    </p>
+                    <div className="w-full h-4 bg-gray-400 rounded">
+                        <div
+                            className="h-4 bg-blue-500 rounded"
+                            style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                    </div>
                 </div>
-                <p className="mt-2 text-sm text-center">
-                    {' '}
-                    Checkpoint 1 - Checkpoint 2 - Completion
-                </p>
             </div>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 h-[calc(100vh-148px)] overflow-scroll p-6">
                 {achievementsData.map((achievement, index) => (
-                    <AchievementCard key={index} {...achievement} />
+                    <AchievementCard
+                        key={index}
+                        {...achievement}
+                        key1={
+                            userBadges
+                                ? userBadges[achievement.label] === true && true
+                                : false
+                        }
+                    />
                 ))}
             </div>
         </div>
     );
 };
 
-const AchievementCard = ({ title, description, icon, points }) => {
+const AchievementCard = ({ title, description, icon, key1 }) => {
     return (
-        <div className="p-4 bg-white rounded shadow">
-            <div className="mb-2 text-3xl">{icon}</div>
-            <h2 className="mb-1 text-xl font-semibold">{title}</h2>
-            <p className="text-gray-700">{description}</p>
-            <p className="mt-2 text-gray-600">Points: {points}</p>
+        <div
+            className={
+                'flex flex-row p-4 ' +
+                (key1 ? 'bg-green-500' : 'bg-blue-50') +
+                ' rounded shadow'
+            }
+        >
+            <div className="w-20 h-20 mr-4">{icon}</div>
+
+            <div className="flex flex-col">
+                <h2 className="mb-1 text-2xl font-semibold">{title}</h2>{' '}
+                <p className="text-gray-700">{description}</p>
+            </div>
         </div>
     );
 };

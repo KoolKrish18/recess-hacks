@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import HandsHolding from 'public/handsholding.png';
 import GradientButton from '@components/GradientButton';

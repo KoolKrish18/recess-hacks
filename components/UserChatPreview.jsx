@@ -1,16 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UserChatPreview = ({ user }) => {
+const UserChatPreview = ({ user, pfp, lastMessage }) => {
     return (
         <Link
-            href={'/portal/chats/' + user.id}
+            href={'/portal/chats/' + user.email}
             className="flex items-center justify-between py-6 mx-8 border-t-2 border-gray-200"
         >
             <div className="flex gap-4 ">
                 <div>
                     <Image
-                        src={user.avatar}
+                        src={pfp}
                         alt="avatar"
                         width={50}
                         height={50}
@@ -21,7 +21,7 @@ const UserChatPreview = ({ user }) => {
                     <h3 className="text-xl font-medium">
                         {user.firstName} {user.lastName}
                     </h3>
-                    <p className="text-gray-500">{user.lastMessage}</p>
+                    <p className="text-gray-500">{lastMessage}</p>
                 </div>
             </div>
             <svg
