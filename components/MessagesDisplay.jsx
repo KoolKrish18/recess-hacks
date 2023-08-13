@@ -1,9 +1,8 @@
-"use client"
+'use client';
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 
-function MessagesDisplay({messages, userId, receiverId}) {
-
+function MessagesDisplay({ messages, userId, receiverId }) {
     const lastMessageRef = useRef(null);
 
     useEffect(() => {
@@ -16,7 +15,6 @@ function MessagesDisplay({messages, userId, receiverId}) {
                 Start Your Conversation Off Strong <br />
                 This is the Start of Something Beautiful
             </div>
-        
             <div className='mt-8'>
                 {messages?.map((message, index) => (
                     <div key={index} dir={message.sender === userId ? 'rtl' : 'ltr'} className={"block"}>
@@ -31,7 +29,7 @@ function MessagesDisplay({messages, userId, receiverId}) {
             </div>
             <div ref={lastMessageRef} className="h-4"></div>
         </div>
-    )
+    );
 }
 
-export default MessagesDisplay
+export default MessagesDisplay;

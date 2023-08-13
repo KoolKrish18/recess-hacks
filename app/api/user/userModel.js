@@ -39,6 +39,10 @@ const userSchema = Schema({
         type: [String],
         required: false,
     },
+    profilePicture: {
+        type: String,
+        required: false,
+    },
     level: {
         type: Number,
         default: 0,

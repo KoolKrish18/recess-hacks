@@ -5,8 +5,8 @@ import Image from 'next/image';
 import HandsHolding from 'public/handsholding.png';
 import GradientButton from '@components/GradientButton';
 
-const SignupPage = () => {
-    const [userData, setUserData] = useState({
+export default function SignupPage() {
+    const [userData, setUserData] = React.useState({
         email: '',
         firstName: '',
         lastName: '',
@@ -15,6 +15,11 @@ const SignupPage = () => {
         age: 0,
         bio: '',
     });
+    const [registerOpen, setRegisterOpen] = React.useState(false);
+
+    const toggleRegisterOpen = () => {
+        setRegisterOpen((prevState) => !prevState);
+    };
 
     const inputs = [
         {
@@ -87,46 +92,53 @@ const SignupPage = () => {
             </div>
             <div className="flex justify-center pt-[1em]">
                 <div className="w-[80%] flex flex-col p-10 text-center">
-                    <h1 className="flex flex-wrap text-5xl font-bold">
+                    <h1 className="flex flex-wrap pb-5 text-5xl font-bold">
                         Find Your Legacy
                     </h1>
-                    <p>Join with us and socialize across generations.</p>
-                    <GradientButton onClick={sendData} text="Get Started" />
+                    <p className="pb-5">
+                        Join with us and socialize across generations.
+                    </p>
+                    <GradientButton
+                        onClick={toggleRegisterOpen}
+                        text="Get Started"
+                    />
                 </div>
             </div>
-            <div className="flex flex-row flex-wrap gap-5 p-5">
-                {inputs.map((key) => (
-                    <Input
-                        key={key.dataField}
-                        userData={userData}
-                        setData={setUserData}
-                        {...key}
-                    />
-                ))}
-                <div className="flex flex-col flex-1">
-                    <label htmlFor="age-group" className="text-xl">
-                        Age Group
-                    </label>
-                    <select
-                        id="age-group"
-                        className="p-2 bg-gray-100 rounded-md outline-none"
-                        onChange={(e) =>
-                            setUserData({
-                                ...userData,
-                                type: e.target.value,
-                            })
-                        }
-                        value={userData.type}
-                    >
-                        <option value="youth">Youth</option>
-                        <option value="senior">Senior</option>
-                    </select>
+            <div className={`w-[80%] p-10 ${registerOpen ? 'animate' : ''}`}>
+                <div className="flex flex-row flex-wrap gap-5 p-5">
+                    {inputs.map((key) => (
+                        <Input
+                            key={key.dataField}
+                            userData={userData}
+                            setData={setUserData}
+                            {...key}
+                        />
+                    ))}
+                    <div className="flex flex-col flex-1">
+                        <label htmlFor="age-group" className="text-xl">
+                            Age Group
+                        </label>
+                        <select
+                            id="age-group"
+                            className="p-2 bg-gray-100 rounded-md outline-none"
+                            onChange={(e) =>
+                                setUserData({
+                                    ...userData,
+                                    type: e.target.value,
+                                })
+                            }
+                            value={userData.type}
+                        >
+                            <option value="youth">Youth</option>
+                            <option value="senior">Senior</option>
+                        </select>
+                    </div>
+                    <GradientButton onClick={sendData} text="Register" />
                 </div>
             </div>
         </div>
     );
-};
-export default SignupPage;
+}
 
 const Input = ({ userData, setData, label, type, inputData, dataField }) => {
     return (
