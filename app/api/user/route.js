@@ -1,7 +1,6 @@
+import { connectDB, db } from '@app/lib/db';
 import { UserModel } from './userModel';
-const { MongoClient } = require('mongodb');
 import { NextResponse } from 'next/server';
-import dbConnect from '@app/lib/dbConnect';
 
 export async function GET(req) {
     await dbConnect();
@@ -27,29 +26,24 @@ export async function GET(req) {
 export async function POST(req) {
     const body = req.body;
 
-    console.log(body);
-
-    const client = new MongoClient(process.env.MONGODB_URI);
+    connectDB();
 
     try {
-        await client.connect();
-        const db = client.db('test');
-        const users = db.collection('users');
-        console.log('Successfully connected to Atlas');
+        await db.once('open', async () => {
+            const newUser = new UserModel({
+                email: 'msso',
+                firstName: 'sss',
+                lastName: 'sss',
+                password: 'sss',
+                type: 'sss',
+                age: 15,
+                bio: '2222',
+            });
+            await newUser.save();
+            console.log('User added:', newUser);
 
-        const newUser = UserModel.create({
-            email: 'msso',
-            firstName: 'sss',
-            lastName: 'sss',
-            password: 'sss',
-            type: 'sss',
-            age: 15,
-            bio: '2222',
+            return NextResponse.json({ status: 200 });
         });
-
-        await users.insertOne(newUser);
-        //await newUser.save();
-        return NextResponse.json({ status: 200 });
     } catch (err) {
         console.log(err.stack);
     } finally {
