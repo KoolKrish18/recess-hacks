@@ -21,17 +21,18 @@ const LoginPage = () => {
         },
     ];
     function submitData() {
-        fetch(
-            '/api/login?email=' +
-                userData.email +
-                '&password=' +
-                userData.password,
-            {
-                method: 'GET',
-            }
-        ).then((response) => {
+        fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: userData.email,
+                password: userData.password,
+            }),
+        }).then((response) => {
             if (response.status === 200) {
-                window.location.href = '/dashboard';
+                let body = response.json();
+                localStorage.setItem('email', body.email);
+                localStorage.setItem('password', data.password);
+                window.location.href = '/';
             } else {
                 alert('Invalid Credentials');
             }
