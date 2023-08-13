@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const [userData, setUserData] = useState({
@@ -21,19 +23,20 @@ const LoginPage = () => {
         },
     ];
     function submitData() {
-        fetch(
-            '/api/login?email=' +
-                userData.email +
-                '&password=' +
-                userData.password,
-            {
-                method: 'GET',
-            }
-        ).then((response) => {
+        fetch('/api/user/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: userData.email,
+                password: userData.password,
+            }),
+        }).then((response) => {
             if (response.status === 200) {
-                window.location.href = '/dashboard';
+                let body = response.json();
+                localStorage.setItem('email', body.email);
+                localStorage.setItem('password', body.password);
+                window.location.href = '/portal';
             } else {
-                alert('Invalid Credentials');
+                toast.error('Your credentials are invalid');
             }
         });
     }
@@ -55,6 +58,7 @@ const LoginPage = () => {
                     className="p-2 bg-gray-200 rounded-md outline-none"
                     onClick={submitData}
                 />
+                <ToastContainer />
             </div>
         </>
     );

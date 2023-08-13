@@ -10,41 +10,32 @@ import pfp from '@public/pfp.png';
 
 const ChatPage = ({ userId }) => {
     const [textMessage, setTextMessage] = useState('');
-        const textRef = useRef(null);
+    const [messages, setMessages] = useState([]);
+    const textRef = useRef(null);
 
     useEffect(() => {
         textRef.current.focus();
     }, []);
 
     const params = useParams();
-    const receiverId = params.userId;
-    const userIdPlaceholder = 'userId1';
+    const receiverEmail = params.userId;
+    const userEmail = localStorage.getItem('email');
 
-    //get the user's info and the info from the receiver
+    const getUserMessages = async (receiverEmail, userEmail) => {
+        // Returns a list of all the user's chats
+        const messagesResponse = await fetch('/api/chat/specific/?userEmail=' + userEmail + '&receiverEmail=' + receiverEmail, {
+            method: 'GET',
+        }).then((res) => res.json());
+        if (messagesResponse.messages) {
+            setMessages(messagesResponse?.messages[0]?.messages);
+        } else {
+            setMessages([]);
+        }
+    };
 
-    const messages = [
-        { user: 'userId1', text: 'Hello, how are you?' },
-        { user: 'userId2', text: "I'm doing well, how about you?" },
-        { user: 'userId1', text: "I'm doing good too, thanks for asking!" },
-        { user: 'userId2', text: 'No problem!' },
-        { user: 'userId1', text: "How's your day going?" },
-        { user: 'userId2', text: "It's going great!" },
-        { user: 'userId1', text: "That's good to hear!" },
-        { user: 'userId2', text: 'Yeah, it is!' },
-        { user: 'userId1', text: "I'm glad you're having a good day!" },
-        { user: 'userId2', text: 'Thanks!' },
-        { user: 'userId1', text: 'No problem!' },
-        { user: 'userId2', text: 'What are you up to?' },
-        { user: 'userId1', text: 'Nothing much, just chilling.' },
-        { user: 'userId2', text: "That's cool!" },
-        { user: 'userId1', text: 'Yeah, it is!' },
-        { user: 'userId2', text: "I'm gonna go now, bye!" },
-        { user: 'userId1', text: 'Bye!' },
-        {
-            user: 'userId2',
-            text: 'This is a message that is longer than 1 line of text in the text message so this might mess some things up but we will see igigigigi',
-        },
-    ];
+    useEffect(() => {
+        getUserMessages(receiverEmail, userEmail);
+    }, [receiverEmail]);
 
     const receiverName = 'John Doe';
 
@@ -86,8 +77,8 @@ const ChatPage = ({ userId }) => {
             <div className="flex-grow">
                 <MessagesDisplay
                     messages={messages}
-                    userId={userIdPlaceholder}
-                    receiverId={receiverId}
+                    userId={userEmail}
+                    receiverEmail={receiverEmail}
                 />
             </div>
             <div className="flex flex-col p-2 bg-gray-100">

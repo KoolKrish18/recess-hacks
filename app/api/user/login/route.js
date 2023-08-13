@@ -1,5 +1,5 @@
 import { connectDB, db } from '@app/lib/db';
-import UserModel from './userModel';
+import UserModel from '../userModel';
 import { NextResponse } from 'next/server';
 
 /*
@@ -18,13 +18,14 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
-export async function GET(req) {
-    let searchURL = new URL(req.url);
-    let searchParams = searchURL.searchParams;
-    const email = searchParams.get('email');
-
+export async function POST(req) {
+    const userData = await req.json();
+    console.log('asdasdasdas');
     // Find and return one user based on email
-    let user = await UserModel.findOne({ email: email });
+    let user = await UserModel.findOne(
+        { email: userData.email },
+        { password: userData.password }
+    );
     if (user) {
         return NextResponse.json({ user: user }, { status: 200 });
     } else {
