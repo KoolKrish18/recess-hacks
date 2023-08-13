@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
     const [userData, setUserData] = useState({
@@ -34,7 +36,7 @@ const LoginPage = () => {
                 localStorage.setItem('password', body.password);
                 window.location.href = '/portal';
             } else {
-                alert('Invalid Credentials');
+                toast.error('Your credentials are invalid');
             }
         });
     }
@@ -56,6 +58,7 @@ const LoginPage = () => {
                     className="p-2 bg-gray-200 rounded-md outline-none"
                     onClick={submitData}
                 />
+                <ToastContainer />
             </div>
         </>
     );
