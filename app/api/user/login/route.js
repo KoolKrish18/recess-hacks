@@ -22,11 +22,9 @@ export async function POST(req) {
     const userData = await req.json();
     console.log('asdasdasdas');
     // Find and return one user based on email
-    let user = await UserModel.findOne(
-        { email: userData.email },
-        { password: userData.password }
-    );
-    if (user) {
+    let user = await UserModel.findOne({ email: userData.email });
+
+    if (user.password === userData.password) {
         return NextResponse.json({ user: user }, { status: 200 });
     } else {
         return NextResponse.json({ error: 'User not found' }, { status: 404 });

@@ -15,6 +15,7 @@ const ChatPage = ({ userId }) => {
 
     useEffect(() => {
         textRef.current.focus();
+        getUserMessages(receiverEmail, userEmail);
     }, []);
 
     const params = useParams();
@@ -23,9 +24,15 @@ const ChatPage = ({ userId }) => {
 
     const getUserMessages = async (receiverEmail, userEmail) => {
         // Returns a list of all the user's chats
-        const messagesResponse = await fetch('/api/chat/specific/?userEmail=' + userEmail + '&receiverEmail=' + receiverEmail, {
-            method: 'GET',
-        }).then((res) => res.json());
+        const messagesResponse = await fetch(
+            '/api/chat/specific/?userEmail=' +
+                userEmail +
+                '&receiverEmail=' +
+                receiverEmail,
+            {
+                method: 'GET',
+            }
+        ).then((res) => res.json());
         if (messagesResponse.messages) {
             setMessages(messagesResponse?.messages[0]?.messages);
         } else {
@@ -35,16 +42,17 @@ const ChatPage = ({ userId }) => {
 
     const pushMessage = async (message) => {
         // Returns a list of all the user's chats
-        const messagesResponse = await fetch('/api/chat', {
+        console.log('ykwhatimnsoding');
+        await fetch('/api/chat', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 people: [userEmail, receiverEmail],
-                messages: {sender: userEmail, message},
+                messages: { sender: userEmail, message },
             }),
-        }).then((res) => console.log(res.json()));
+        }).then(async (res) => console.log(await res.json()));
     };
 
     useEffect(() => {
@@ -59,7 +67,7 @@ const ChatPage = ({ userId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (textMessage === '') return;
-        pushMessage(textMessage)
+        pushMessage(textMessage);
         setMessages([...messages, { sender: userEmail, message: textMessage }]);
         //Send the message to the server
         setTextMessage('');
