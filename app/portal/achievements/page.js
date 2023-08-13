@@ -16,6 +16,7 @@ const AchievementsPage = () => {
         }).then(async (res) => {
             if (res.status == 200) {
                 let body = await res.json();
+                console.log(body);
                 setUserBadges(body.achievements);
             }
         });

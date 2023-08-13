@@ -5,8 +5,8 @@ import { NextResponse } from 'next/server';
 /*
     @ Description of all possible endpoints:
     * GET: Get all data for a user
-        ? email: email of user
-        > Returns: User email
+        ? email: email of user OR nothing (to get all users)
+        > Returns: User data
     * POST: Create a new user
         ? userData: object of user data (conforming to UserModel)
         > Returns: User object
@@ -20,13 +20,17 @@ connectDB();
 
 export async function GET(req) {
     let searchURL = new URL(req.url);
-    console.log();
     let searchParams = searchURL.searchParams;
     const email = searchParams.get('email');
-
-    // Find and return one user based on email
-    let user = await UserModel.findOne({ email: email });
-    return NextResponse.json({ user: user }, { status: 200 });
+    if (email) {
+        // Find and return one user based on email
+        let user = await UserModel.findOne({ email: email });
+        return NextResponse.json({ user }, { status: 200 });
+    } else {
+        // Find and return all users
+        let userList = await UserModel.find({});
+        return NextResponse.json({ userList }, { status: 200 });
+    }
 }
 
 export async function POST(req) {
