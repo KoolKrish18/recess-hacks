@@ -1,14 +1,79 @@
-import React from 'react'
-import Navbar from '@components/Navbar'
+'use client';
+import { useState } from 'react';
 
 const LoginPage = () => {
-  return (
-    <>
-    <div>wecfdwef
-      
-    </div>
-    </>
-  )
-}
+    const [userData, setUserData] = useState({
+        email: '',
+        password: '',
+    });
+    const inputs = [
+        {
+            type: 'email',
+            label: 'Email',
+            inputData: userData.email,
+            dataField: 'email',
+        },
+        {
+            type: 'password',
+            label: 'Password',
+            inputData: userData.password,
+            dataField: 'password',
+        },
+    ];
+    function submitData() {
+        fetch(
+            '/api/login?email=' +
+                userData.email +
+                '&password=' +
+                userData.password,
+            {
+                method: 'GET',
+            }
+        ).then((response) => {
+            if (response.status === 200) {
+                window.location.href = '/dashboard';
+            } else {
+                alert('Invalid Credentials');
+            }
+        });
+    }
 
-export default LoginPage
+    return (
+        <>
+            <div className="flex flex-col gap-5 p-5">
+                {inputs.map((input) => (
+                    <Input
+                        key={input.label}
+                        userData={userData}
+                        setData={setUserData}
+                        {...input}
+                    />
+                ))}
+                <input
+                    type="submit"
+                    value="Login"
+                    className="p-2 bg-gray-200 rounded-md outline-none"
+                    onClick={submitData}
+                />
+            </div>
+        </>
+    );
+};
+
+const Input = ({ userData, setData, label, type, inputData, dataField }) => {
+    return (
+        <div className="flex flex-col flex-1">
+            <label className="text-xl">{label}</label>
+            <input
+                type={type}
+                value={inputData}
+                onChange={(e) =>
+                    setData({ ...userData, [dataField]: e.target.value })
+                }
+                className="p-2 bg-gray-100 rounded-md outline-none"
+            />
+        </div>
+    );
+};
+
+export default LoginPage;
