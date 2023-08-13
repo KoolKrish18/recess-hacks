@@ -1,12 +1,34 @@
-import Chat from './chatModel';
+import { connectDB } from '@app/lib/db';
+import UserModel from '../user/userModel';
+import ChatModel from './chatModel';
 import { NextResponse } from 'next/server';
 
+/*
+    @ Description of all possible endpoints:
+    * GET: Get all chats for a user
+        ? email: email of user
+        > Returns: Array or object? of chats
+    * POST: Create a new chat
+        ? people: array of emails of people in chat
+        > Returns: Chat object
+    * PUT: Update a chat - DOES NOT OVERWRITE THE MESSAGES! (simply pushes them to array)
+        ? people: array of emails of people in chat
+        ? messages: array of messages
+        > Returns: Status code
+    * DELETE: Delete a chat
+*/
+
+//! THIS IS IMPORTANT, learned this the hard way LOL
+connectDB();
+
 export async function GET(req) {
+    let searchURL = new URL(req.url);
+    let searchParams = searchURL.searchParams;
+    const userEmail = searchParams.get('email');
     try {
-        const userEmail = req.query.email;
-        const chatData = await Chat.findOne({ people: userEmail });
-
-        return NextResponse.json(chatData);
+        // Find all chats and send back
+        const chatData = await ChatModel.find({ people: { $in: [userEmail] } });
+        return NextResponse.json({ chatData: chatData }, { status: 200 });
     } catch (err) {
         return NextResponse.json(
             { error: 'Internal Server Error' },
@@ -15,32 +37,51 @@ export async function GET(req) {
     }
 }
 
+// Create a new chat
 export async function POST(req) {
+    const chatData = await req.json();
+    console.log(await chatData);
     try {
-        const chatData = req.body;
-        const peopleEmails = req.body.people;
-        const newChat = new Chat({
-            ...chatData,
-            _id: peopleEmails,
-        });
-        await Chat.create(newChat);
+        const newChat = new ChatModel(chatData);
+        await newChat.save();
+        console.log('Chat created:', newChat);
 
-        return NextResponse.json({ status: 201 });
+        // Update each user's data in UserModel > chats
+        chatData.people.forEach(async (email) => {
+            console.log('Updating user: ' + email);
+            await UserModel.findOneAndUpdate(
+                { email: email },
+                { chats: newChat._id }
+            );
+        });
+        return NextResponse.json({ chat: newChat }, { status: 201 });
     } catch (err) {
-        return NextResponse.json(
-            { error: 'Internal Server Error' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: err }, { status: 500 });
     }
 }
 
-export async function PUT(request) {}
-
-export async function DELETE(request) {
+export async function PUT(req) {
+    const updateData = await req.json();
     try {
-        const userEmail = req.query.email;
-        await Chat.findByIdAndDelete(chatId);
+        console.log(updateData);
+        const people = updateData.people;
+        await ChatModel.findOneAndUpdate(
+            { people: people },
+            { $push: { messages: updateData.messages } }
+        );
 
+        return NextResponse.json({ status: 200 });
+    } catch (err) {
+        return NextResponse.json({ error: err.stack }, { status: 500 });
+    }
+}
+
+export async function DELETE(req) {
+    let searchURL = new URL(req.url);
+    let searchParams = searchURL.searchParams;
+    const userEmail = searchParams.get('email');
+    try {
+        await ChatModel.findOneAndDelete({ people: { $in: [userEmail] } });
         return NextResponse.json({ status: 200 });
     } catch (err) {
         return NextResponse.json(

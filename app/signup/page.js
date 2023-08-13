@@ -63,7 +63,7 @@ const SignupPage = () => {
             },
             body: JSON.stringify(userData),
         }).then(async (res) => {
-            if (res.status === 200) {
+            if (res.status === 201) {
                 let data = await res.json();
                 localStorage.setItem('firstName', data.firstName);
                 localStorage.setItem('lastName', data.lastName);
@@ -74,11 +74,7 @@ const SignupPage = () => {
             }
         });
     }
-    /*     function momoisabum() {
-        fetch('./api/user/?email=msso', {
-            method: 'GET',
-        });
-    } */
+
     return (
         <div className="flex flex-col content-center min-h-screen">
             <div className="flex justify-center">

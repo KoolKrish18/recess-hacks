@@ -47,8 +47,8 @@ const userSchema = Schema({
     appointments: [
         { type: Schema.ObjectId, ref: 'Appointment', required: false },
     ],
-    chat: [{ type: Schema.ObjectId, ref: 'Chat', required: false }],
+    chats: [{ type: Schema.ObjectId, ref: 'Chat', required: false }],
 });
 
 const UserModel = mongoose.models.UserModel || model('UserModel', userSchema);
-export { UserModel };
+export default UserModel;

@@ -9,9 +9,9 @@ const chatSchema = Schema({
     people: {
         type: [String],
         required: true,
-        unique: true,
+        unique: false,
     },
-    messages: [messageSchema],
+    messages: { type: [messageSchema], default: [] },
 });
 
 const ChatModel = mongoose.models.ChatModel || model('ChatModel', chatSchema);
