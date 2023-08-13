@@ -1,24 +1,42 @@
-import React from 'react';
+'use client';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
 
 const ProfilePage = () => {
-    const profileData = {
-        name: 'John Doe',
-        bio: 'Software Engineer | Nature Lover | Coffee Enthusiast',
-        interests: ['Programming', 'Hiking', 'Photography'],
-        mutualFriends: 23,
-        age: 30,
-        email: 'john@example.com',
-    };
+    const [profileData, setProfileData] = useState({
+        firstName: '',
+        lastName: '',
+        bio: '',
+        interests: [],
+        age: 0,
+        email: '',
+    });
 
+    let profData = () => {
+        fetch('/api/user?email=' + localStorage.getItem('email'))
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setProfileData(data.user);
+                return data;
+            });
+    };
+    useEffect(() => {
+        profData();
+    }, []);
     return (
         <div className="container p-6 mx-auto">
             <div className="flex flex-col items-center space-y-6">
-                <img
-                    src="profile.jpg" // Replace with actual profile image URL
+                <Image
+                    src="https://innocenceproject.org/wp-content/uploads/2023/02/AP_22082506803469-scaled-1.jpg"
                     alt={`${profileData.name}'s Profile`}
+                    width={128}
+                    height={128}
                     className="w-32 h-32 rounded-full"
                 />
-                <h1 className="text-2xl font-semibold">{profileData.name}</h1>
+                <h1 className="text-2xl font-semibold">
+                    {profileData.firstName} {profileData.lastName}
+                </h1>
                 <p className="text-gray-600">{profileData.bio}</p>
                 <div className="flex space-x-2">
                     {profileData.interests.map((interest, index) => (
@@ -30,9 +48,7 @@ const ProfilePage = () => {
                         </span>
                     ))}
                 </div>
-                <p className="text-gray-600">
-                    Mutual Friends: {profileData.mutualFriends}
-                </p>
+
                 <p className="text-gray-600">Age: {profileData.age}</p>
                 <button className="px-4 py-2 text-white bg-blue-500 rounded-md">
                     Send Message
