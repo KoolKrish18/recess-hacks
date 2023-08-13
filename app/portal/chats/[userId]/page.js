@@ -57,7 +57,7 @@ const ChatPage = ({ userId }) => {
         setInterval(() => {
             console.log('Getting messages');
             getUserMessages(receiverEmail, userEmail);
-        }, 10000);
+        }, 10000000);
     }, [receiverEmail, userEmail]);
 
     const receiverName = 'John Doe';

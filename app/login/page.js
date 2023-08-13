@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
+    const router = useRouter();
     const [userData, setUserData] = useState({
         email: '',
         password: '',
@@ -29,13 +31,12 @@ const LoginPage = () => {
                 email: userData.email,
                 password: userData.password,
             }),
-        }).then((response) => {
+        }).then(async (response) => {
             if (response.status === 200) {
-                let body = response.json();
-                console.log(body);
-                localStorage.setItem('email', body.email);
-                localStorage.setItem('password', body.password);
-                window.location.href = '/portal';
+                let body = await response.json();
+                localStorage.setItem('email', body.user.email);
+                localStorage.setItem('password', body.user.password);
+                router.push('/portal');
             } else {
                 toast.error('Your credentials are invalid');
             }
