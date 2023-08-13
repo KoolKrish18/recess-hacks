@@ -19,7 +19,7 @@ const ChatPage = ({ userId }) => {
     }, []);
 
     const params = useParams();
-    const receiverEmail = params.userId;
+    const receiverEmail = params.userId.replace('%40', '@');
     const userEmail = localStorage.getItem('email');
 
     const getUserMessages = async (receiverEmail, userEmail) => {
@@ -52,7 +52,7 @@ const ChatPage = ({ userId }) => {
                 people: [userEmail, receiverEmail],
                 messages: { sender: userEmail, message },
             }),
-        }).then(async (res) => console.log(await res.json()));
+        });
     };
 
     useEffect(() => {

@@ -66,11 +66,12 @@ export async function PUT(req) {
     try {
         const people = updateData.people;
         const messages = updateData.messages;
-
+        console.log(people);
         await ChatModel.findOneAndUpdate(
             { people: { $all: people } },
             { $push: { messages: messages } }
         );
+        console.log(data);
         console.log('SUCCESS');
         return NextResponse.json({ status: 200 });
     } catch (err) {
