@@ -1,9 +1,18 @@
-import Datepicker from "tailwind-datepicker-react"
+// import Datepicker from "tailwind-datepicker-react"
 
-const page = () => {
+// const page = () => {
+//   return (
+//     <Datepicker />
+//   )
+// }
+
+// export default page
+import React from 'react'
+
+const BookDatePage = () => {
   return (
-    <Datepicker />
+    <div>BookDatePage</div>
   )
 }
 
-export default page
+export default BookDatePage
