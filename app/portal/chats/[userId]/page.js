@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef, useState, useEffect } from 'react'
 import { useParams } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,6 +9,15 @@ import MessagesDisplay from '@components/MessagesDisplay';
 import pfp from '@public/pfp.png'
 
 const ChatPage = ({ userId }) => {
+
+    const [textMessage, setTextMessage] = useState('');
+    const textRef = useRef(null);
+    
+    useEffect(() => {
+        textRef.current.focus();
+    }, []);
+
+
     const params = useParams();
     const receiverId = params.userId;
     const userIdPlaceholder = "userId1";
@@ -39,6 +49,13 @@ const ChatPage = ({ userId }) => {
         
     const receiverName = "John Doe"
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(textMessage === '') return;
+        //Send the message to the server
+        setTextMessage('');
+    }
+
     return (
         <div className='flex flex-col h-full'>
             <div className='flex items-center w-full gap-8 px-8 py-4 text-2xl shadow-sm'>
@@ -56,10 +73,11 @@ const ChatPage = ({ userId }) => {
                 <MessagesDisplay messages={messages} userId={userIdPlaceholder} receiverId={receiverId}/>
             </div>
             <div className="flex flex-col p-2 bg-gray-100">
-                <form className="flex gap-2" onSubmit={() => {}}>
+                <form className="flex gap-2" onSubmit={handleSubmit}>
                     <input type="text" 
-                            value={""}
-                            onChange={() => {}}
+                            ref={textRef}
+                            value={textMessage}
+                            onChange={(e) => {setTextMessage(e.target.value)}}
                             placeholder="Type your message here" 
                             className="flex-grow p-2 px-4 bg-white border rounded-full"/>
                     <button type="submit" className="p-3 text-white bg-blue-500 rounded-full">
