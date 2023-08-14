@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
     const [page, setPage] = useState('');
-
+    const email = localStorage.getItem('email');
     const pathname = usePathname();
 
     useEffect(() => {
@@ -138,7 +138,7 @@ const Navbar = () => {
                                     'bg-gray-200 text-gray-600')
                             }
                         >
-                            <Link href="/portal/profile">
+                            <Link href={'/portal/profile/' + email}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
