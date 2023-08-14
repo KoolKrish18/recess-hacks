@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import GradientButton from '@components/GradientButton';
 
 export default function ProfilePage() {
     const params = useParams();
@@ -51,9 +52,10 @@ export default function ProfilePage() {
                 </div>
 
                 <p className="text-gray-600">Age: {profileData.age}</p>
-                <button className="px-4 py-2 text-white bg-blue-500 rounded-md">
-                    Send Message
-                </button>
+                <GradientButton
+                    text="Send Message"
+                    className="px-4 py-2 text-white bg-blue-500 rounded-md"
+                />
                 <p className="text-gray-600">Email: {profileData.email}</p>
             </div>
         </div>
