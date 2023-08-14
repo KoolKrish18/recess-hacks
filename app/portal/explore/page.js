@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import GradientButton from '@components/GradientButton';
 
 const interestsData = [
     'Programming',
@@ -14,13 +15,39 @@ const interestsData = [
 ];
 
 const ExplorePage = () => {
+    // search variables
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedInterests, setSelectedInterests] = useState([]);
+    const [userCards, setUserCards] = useState([]);
 
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
+    const getUserCards = async () => {
+        // Returns a list of all the user cards (no params)
+        await fetch('/api/user').then((res) => res.json());
+        setUserCards([]);
     };
 
+    const getSearchTerm = async (interest) => {
+        // Returns a list of all the user cards (no params)
+        await fetch('/api/user/interest?interest=' + interest, {
+            method: 'GET',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (userInterestResponse.userCards) {
+                    setUserCards(userInterestResponse?.userCards[0]?.userCards);
+                } else {
+                    setUserCards([]);
+                }
+            });
+    };
+
+    // search functions
+    const handleSearch = (event) => {
+        getSearchTerm(event.target.value);
+    };
+
+    // only filter if it exists
     const handleInterestToggle = (interest) => {
         if (selectedInterests.includes(interest)) {
             setSelectedInterests(
@@ -31,20 +58,23 @@ const ExplorePage = () => {
         }
     };
 
+    // used for mapping
     const filteredInterests = interestsData.filter((interest) =>
         interest.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="container p-6 mx-auto ">
-            <div className="mb-4">
+            <div className="flex mb-4">
                 <input
                     type="text"
                     placeholder="Search interests"
                     value={searchTerm}
-                    onChange={handleSearch}
                     className="w-full px-4 py-2 border rounded"
                 />
+                <GradientButton text="Search">
+                    <button onClick={() => getSearchTerm()}></button>
+                </GradientButton>
             </div>
             <div className="flex flex-wrap space-x-2">
                 {filteredInterests.map((interest, index) => (
